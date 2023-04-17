@@ -4,6 +4,7 @@ from carts.models import Cart, CartItem
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from store.models import Variation
+from .models import CartItem 
 
 # Create your views here.
 
@@ -15,20 +16,20 @@ def _cart_id(request):
 
 
 def add_cart(request, product_id):
+    product_variation = []
+    product = Product.objects.get(id=product_id)
     if request.method == 'POST':
         for item in request.POST:
             key = item
             value = request.POST[key]
             
             try:
-                variation = Variation.objects.get(variation_category__iexact=key, variation_value__iexact = value)
-                print(variation)
+                variation = Variation.objects.get(product = product, variation_category__iexact=key, variation_value__iexact = value)
+                product_variation.append(variation)
             except:
                 pass 
     
     
-    
-    product = Product.objects.get(id=product_id)
     try:
         cart = Cart.objects.get(cart_id =_cart_id(request))  # get the cart using the cart_id present in the session 
     except Cart.DoesNotExist:
@@ -38,7 +39,11 @@ def add_cart(request, product_id):
     cart.save()
 
     try:
-        cart_item = CartItem.objects.get(product=product , cart=cart)
+        cart_item = CartItem.objects.get(product=product , cart=cart)    
+        if len(product_variation) > 0:
+            cart_item.variations.clear()
+            for item in product_variation:
+                cart_item.variations.add(item)
         cart_item.quantity += 1  # cart_item.quantity = cart_item.quantity + 1 
         cart_item.save()
 
@@ -48,9 +53,11 @@ def add_cart(request, product_id):
             quantity = 1,
             cart = cart,
         )
+        if len(product_variation) > 0:
+            cart_item.variations.clear()
+            for item in product_variation:
+                cart_item.variations.add(item)
         cart_item.save()
-    # return HttpResponse(cart_item.quantity)
-    # exit()
     return redirect('cart')
 
 
