@@ -15,8 +15,8 @@ def _cart_id(request):
 
 def add_cart(request, product_id):
     color = request.GET['color']
-    size = request.GET['size']
-    return HttpResponse(color + size)
+    # size = request.GET['size']
+    return HttpResponse(color)
     exit()
     
     
