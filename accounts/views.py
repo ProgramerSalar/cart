@@ -17,7 +17,8 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
-
+from carts.views import _cart_id
+from carts.models import Cart, CartItem
 
 
 def register(request):
@@ -62,6 +63,21 @@ def login(request):
         password = request.POST['password']
         user = auth.authenticate(email=email, password=password)
         if user is not None:
+            try:
+                print('entering inside try block')
+                cart = Cart.objects.get(cart_id = _cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart = cart).exists()
+                print(is_cart_item_exists)
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    # print(cart_item)
+                    for item in cart_item:
+                        item.user = user
+                        item.save()
+                
+            except:
+                print('entering inside except block')
+                pass
             auth.login(request,user)
             messages.success(request, 'You are now logged in.')
             return redirect('deshboard')
