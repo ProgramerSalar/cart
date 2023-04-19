@@ -49,8 +49,8 @@ class Order(models.Model):
     
     
     
-    def _str_(self):
-        return self.user.first_name
+    def __str__(self):
+        return self.first_name
     
     
     
