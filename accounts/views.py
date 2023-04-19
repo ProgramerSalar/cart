@@ -46,8 +46,7 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            message.success(request, 'Thank you for registering with us. we have sent you an email to your email address. Please verify it.')
-            return redirect('register' , 'Thank you')
+            return redirect('/accounts/login/?command=verification&email='+email)
     else:
         form = RegistrationForm()
     context = {
@@ -64,8 +63,8 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
         if user is not None:
             auth.login(request,user)
-            # messages.success(request, 'You are now logged in.')
-            return redirect('home')
+            messages.success(request, 'You are now logged in.')
+            return redirect('deshboard')
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
@@ -98,5 +97,7 @@ def activate(request, uidb64 , token):
         return redirect('register')
     
     
-        
+@login_required(login_url='login')
+def deshboard(request):
+    return render(request , 'accounts/deshboard.html')
     
