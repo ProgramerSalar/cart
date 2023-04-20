@@ -26,8 +26,9 @@
 <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
 <!-- custom javascript -->
-<script src="js/script.js" type="text/javascript"></script>
-
+<script src="{% static 'js/script.js'}%" type="text/javascript"></script>
+{% comment %} paypal script {% endcomment %}
+<script src="https://www.paypal.com/sdk/js?client-id=AQ2KUchdoozInnWOA60t4STZpBFLjUTyIv7_92hJg4fgRa2I0fJPhbl9DWrlbvHG9H1zy8utvIK7g904&currency=USD"></script>
 
 <script type="text/javascript">
 /// some script
