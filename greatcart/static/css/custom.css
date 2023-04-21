@@ -35,7 +35,7 @@
     color: #ffb503;
   }
   
-  /* hover hightlight */
+  /* hover highlight */
   input:checked + label:hover, input:checked ~ label:hover,input:checked ~ label:hover ~ label,
   label:hover ~ input:checked ~ label{
     color: #cc9000;
@@ -59,3 +59,4 @@
     height: 80px;
     border: 1px solid grey;
   }
+  
