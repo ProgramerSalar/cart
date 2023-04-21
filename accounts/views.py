@@ -22,6 +22,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
 import requests
+from orders.models import Order
 
 
 def register(request):
@@ -151,7 +152,12 @@ def activate(request, uidb64 , token):
     
 @login_required(login_url='login')
 def deshboard(request):
-    return render(request , 'accounts/deshboard.html')
+    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
+    orders_count = orders.count()
+    context = {
+        'orders_count':orders_count
+    }
+    return render(request , 'accounts/deshboard.html', context)
     
     
 def forgotPassword(request):
