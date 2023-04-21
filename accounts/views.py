@@ -311,3 +311,4 @@ def order_detail(request , order_id):
     }
     return render(request , 'accounts/order_detail.html',context)
     
+    
