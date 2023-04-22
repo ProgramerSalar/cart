@@ -4,8 +4,7 @@ from django.urls import path , include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-# from django.utils.translation import gettext_lazy as _
-# from django.utils.translation import gettext_lazy as _
+
 
 
 urlpatterns = [
